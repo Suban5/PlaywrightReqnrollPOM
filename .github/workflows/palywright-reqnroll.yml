@@ -31,6 +31,10 @@ jobs:
     - name: Build the project
       run: dotnet build --configuration Debug    
    
+      # 4.1 Install Playwright .NET Tool
+    - name: Install Playwright .NET Tool
+      run: dotnet tool restore
+      
     #5. Install Playwright browsers
     - name: Install Playwright browsers
       run: dotnet playwright install
