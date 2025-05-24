@@ -1,0 +1,56 @@
+name: Playwright Tests with Reqnroll
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  test:
+    name: Run Playwright Reqnroll Tests
+    runs-on: windows-latest  # For a list of available runner types, refer to
+                             # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+    steps:
+    # 1. Checkout code
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # 2. Setup the .NET
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    # 3. Install Reqnroll.Nunit and othe dependencies
+    - name: Install Dependencies
+      run: |
+        dotnet add package Reqnroll.NUnit --version 2.4.1
+        dotnet add package Microsoft.Playwright.NUnit --version 1.52.0
+        dotnet add package Microsoft.Playwright --version 1.52.0
+        dotnet restore
+        
+    # 4. Install Playwright browsers
+    - name: Install Playwright
+      run: |
+            pwsh bin/Debug/net8.0/playwright.ps1 install
+            pwsh bin/Debug/net8.0/playwright.ps1 install-deps
+
+    # 5. Build the project
+    - name: Build
+      run: dotnet build --no-restore
+
+    # 6. Run tests with NUnit console logger
+    - name: Run Tests
+      run: dotnet test --no-build --logger "console;verbosity=normal" --logger "nunit;LogFilePath=TestResults/TestResults.xml"
+
+    # 7. Upload test results (optional)
+    - name: Upload Test Results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-results
+        path: |
+          TestResults/
+          TestPlaywright/bin/Debug/net6.0/playwright.artifacts
