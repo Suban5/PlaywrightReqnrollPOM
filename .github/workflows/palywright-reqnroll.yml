@@ -23,7 +23,7 @@ jobs:
       with:
         dotnet-version: 8.0.x
 
-    # 3. Install Reqnroll.Nunit and othe dependencies
+    # 3. Install Reqnroll.Nunit and other dependencies
     - name: Install Dependencies
       run: |
 
@@ -36,8 +36,8 @@ jobs:
     # 4. Install Playwright browsers
     - name: Install Playwright
       run: |
-            pwsh ./bin/Debug/net8.0/playwright-cli/playwright.ps1 install
-            pwsh ./bin/Debug/net8.0/playwright-cli/playwright.ps1 install-deps
+            cd PlaywrightReqnrollFramework
+            dotnet playwright install
 
     # 5. Build the project
     - name: Build
