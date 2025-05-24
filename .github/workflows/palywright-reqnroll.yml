@@ -36,7 +36,6 @@ jobs:
     # 4. Install Playwright browsers
     - name: Install Playwright
       run: |
-            cd PlaywrightReqnrollFramework
             dotnet playwright install
 
     # 5. Build the project
