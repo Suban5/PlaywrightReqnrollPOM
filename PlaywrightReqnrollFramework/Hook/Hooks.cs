@@ -18,13 +18,14 @@ public class Hooks(ScenarioContext scenarioContext)
     [BeforeScenario("@web")]
     public async Task BeforeScenario()
     {
+        var settings = ConfigReader.LoadSettings();
         TestSettings testSettings = new TestSettings
         {
-            Headless = false, // Set to true for headless mode
-            SlowMo = 500,
-            Timeout = 15000, // Slow down operations by ms
-            BaseUrl = "https://www.saucedemo.com", // Set your base URL
-            BrowserType = BrowserTypeEnum.Firefox // Choose your browser type
+            Headless = settings.Headless, // Set to true for headless mode
+            SlowMo = settings.SlowMo, // Slow down operations by ms
+            Timeout = settings.Timeout, // Slow down operations by ms
+            BaseUrl = settings.BaseUrl, // Set your base URL
+            BrowserType = settings.BrowserType // Choose your browser type
         };
         _driver = new PlaywrightDriver(testSettings);
         var page = await _driver.InitializeAsync();

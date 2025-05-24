@@ -1,7 +1,6 @@
 @web @inventory @test @checkout
 Feature: Checkout Item from Inventory
 
-In order to purchase items from the inventory
 As a user
 I want to add items to the cart and complete the checkout process
 
