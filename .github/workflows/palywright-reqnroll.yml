@@ -26,6 +26,7 @@ jobs:
     # 3. Install Reqnroll.Nunit and othe dependencies
     - name: Install Dependencies
       run: |
+
         cd PlaywrightReqnrollFramework
         dotnet add package Reqnroll.NUnit --version 2.4.1
         dotnet add package Microsoft.Playwright.NUnit --version 1.52.0
