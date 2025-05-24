@@ -7,7 +7,6 @@ on:
     branches: [ "main" ]
 
 jobs:
-
   test:
     name: Run Playwright Reqnroll Tests
     runs-on: windows-latest  # For a list of available runner types, refer to
@@ -27,20 +26,20 @@ jobs:
     - name: Install Dependencies
       run: |
 
-        cd PlaywrightReqnrollFramework
-        dotnet add package Reqnroll.NUnit --version 2.4.1
-        dotnet add package Microsoft.Playwright.NUnit --version 1.52.0
-        dotnet add package Microsoft.Playwright --version 1.52.0
+        # cd PlaywrightReqnrollFramework
+        # dotnet add package Reqnroll.NUnit --version 2.4.1
+        # dotnet add package Microsoft.Playwright.NUnit --version 1.52.0
+        # dotnet add package Microsoft.Playwright --version 1.52.0
         dotnet restore
-        
-    # 4. Install Playwright browsers
-    - name: Install Playwright
+    
+    #4. Buld the project
+    - name: Build the project (required before install)
+      run: dotnet build    
+   
+    #5. Install Playwright browsers
+    - name: Install Playwright browsers
       run: |
-            dotnet playwright install
-
-    # 5. Build the project
-    - name: Build
-      run: dotnet build --no-restore
+            dotnet tool run playwright install
 
     # 6. Run tests with NUnit console logger
     - name: Run Tests
@@ -54,4 +53,4 @@ jobs:
         name: test-results
         path: |
           TestResults/
-          TestPlaywright/bin/Debug/net6.0/playwright.artifacts
+          
