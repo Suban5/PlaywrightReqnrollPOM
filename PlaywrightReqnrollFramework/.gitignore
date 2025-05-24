@@ -1,0 +1,8 @@
+.vscode/
+bin/
+
+obj/
+*.user
+*.suo
+
+*.feature.cs

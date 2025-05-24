@@ -1,0 +1,14 @@
+{
+    "dotnet.defaultSolution": "PlaywrightReqnrollFramework.sln",
+    "cucumberautocomplete.steps": [
+    "PlaywrightReqnrollFramework/**/*.cs"
+  ],
+  "cucumberautocomplete.syncfeatures": "YourProjectFolder/**/*.feature",
+  "cucumberautocomplete.strictGherkinCompletion": true,
+  "cucumberautocomplete.smartSnippets": true,
+  "cucumberautocomplete.stepsInvariants": true,
+
+  "files.exclude": {
+    "**/*.feature.cs": true
+  }
+}
