@@ -1,6 +1,3 @@
-using System;
-using System.Threading.Tasks;
-using Microsoft.Playwright;
 using NUnit.Framework;
 using PlaywrightReqnrollFramework.Pages;
 using Reqnroll;
@@ -8,46 +5,55 @@ using Reqnroll;
 namespace PlaywrightReqnrollFramework.LoginStepDef
 {
     [Binding]
-    public class LoginStepDef
+    public class LoginStepDef : BasePage
     {
-        private readonly ScenarioContext _scenarioContext;
-        private readonly IPage _page;
+        private readonly PageFactory _factory;
         private readonly LoginPage _loginPage;
-        private readonly InventoryPage _inventoryPage;
+        private readonly ProductPage _productPage;
 
-        public LoginStepDef(ScenarioContext scenarioContext)
+        public LoginStepDef(ScenarioContext scenarioContext) : base(scenarioContext)
         {
-            _scenarioContext = scenarioContext;
-            _page = scenarioContext.Get<IPage>("currentPage");
-            _loginPage = new LoginPage(_page);
-            _inventoryPage = new InventoryPage(_page);
+            _factory = new PageFactory(scenarioContext);
+            _loginPage = _factory.GetPage<LoginPage>();
+            _productPage = _factory.GetPage<ProductPage>();
         }
+
 
 
         [Given(@"I navigate to {string}")]
-        public async Task GivenINavigateTo(string url)
+        public void GivenINavigateTo(string url)
         {
-            await _loginPage.NavigateToAsync(url);
+            _loginPage.NavigateToAsync(url).GetAwaiter().GetResult();
         }
 
         [When("I login with username {string} and password {string}")]
-        public async Task WhenILoginWithUsernameAndPassword(string username, string password)
+        public void WhenILoginWithUsernameAndPassword(string username, string password)
         {
-            await _loginPage.LoginAsync(username, password);
+            _loginPage.LoginAsync(username, password).GetAwaiter().GetResult();
         }
 
         [Then(@"I should be redirected to the inventory page")]
-        public async Task ThenIshouldberedirectedtotheinventorypage()
+        public void ThenIshouldberedirectedtotheinventorypage()
         {
-            bool isInventoryPageLoaded = await _inventoryPage.IsInventoryPageLoadedAsync();
+            bool isInventoryPageLoaded = _productPage.IsInventoryPageLoadedAsync().GetAwaiter().GetResult();
             Assert.That(isInventoryPageLoaded, Is.True, "Inventory page is not loaded after login.");
         }
 
         [Then(@"I should see the products header")]
-        public async Task ThenIshouldseetheproductsheader()
+        public void ThenIshouldseetheproductsheader()
         {
-            bool isVisible = await _inventoryPage.IsInventoryPageLoadedAsync();
+            bool isVisible = _productPage.IsInventoryPageLoadedAsync().GetAwaiter().GetResult();
             Assert.That(isVisible, Is.True, "The 'Products' header is not visible on the page.");
+        }
+
+
+        [Then(@"I should see the error message ""(.*)""")]
+        public void ThenIshouldseetheerrormessage(string errorMessage)
+        {
+            bool isErrorMessageVisible = _loginPage.IsErrorMessageVisibleAsync().GetAwaiter().GetResult();
+            Assert.That(isErrorMessageVisible, Is.True, "Error message is not visible.");
+            string actualErrorMessage = _loginPage.GetErrorMessageTextAsync().GetAwaiter().GetResult();
+            Assert.That(actualErrorMessage, Is.EqualTo(errorMessage), $"Expected error message '{errorMessage}' but got '{actualErrorMessage}'.");
         }
 
 

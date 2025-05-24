@@ -1,40 +1,67 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Playwright;
+using Reqnroll;
 
 namespace PlaywrightReqnrollFramework.Pages;
 
-public class InventoryPage
+public class InventoryPage(ScenarioContext scenarioContext) : BasePage(scenarioContext)
 {
-    private readonly IPage _page;
+    private ILocator BtnContinueShopping => _page.Locator("#continue-shopping");
+    private ILocator BtnCheckout => _page.Locator("#checkout");
 
-    public InventoryPage(IPage page)
+    private ILocator GetProductName(string productName)
     {
-        _page = page;
+        return _page.Locator(".cart_item")
+                    .Filter(new() { HasText = productName })
+                    .Locator(".inventory_item_name");
+    }
+    private ILocator GetInventoryRemoveBtn(string productName)
+    {
+        return _page.Locator(".cart_item")
+                    .Filter(new() { HasText = productName })
+                    .Locator(".cart_button")
+                    .Filter(new() { HasText = "Remove" });
+    }
+    private ILocator GetInventoryItemPrice(string productName)
+    {
+        return _page.Locator(".cart_item")
+                    .Filter(new() { HasText = productName })
+                    .Locator(".inventory_item_price");
     }
 
-    // Define locators for elements on the inventory page
-    private ILocator InventoryItems => _page.Locator(".inventory_item");
-
-    private ILocator ProductsHeader => _page.Locator("[data-test='title']");
-    private ILocator CartButton => _page.Locator("#shopping_cart_container");
-
-    // Method to verify if the inventory page is loaded
-    public async Task<bool> IsInventoryPageLoadedAsync()
+    public async Task<bool> isProductInInventoryAsync(string productName)
     {
-        return await InventoryItems.CountAsync() > 0;
+        var productLocator = GetProductName(productName);
+        return await productLocator.IsVisibleAsync();
     }
-
-    // Method to navigate to the cart
-    public async Task NavigateToCartAsync()
+    public async Task ClickContinueShoppingAsync()
     {
-        await CartButton.ClickAsync();
+        await BtnContinueShopping.ClickAsync();
     }
-
-    public async Task<bool> isHeaderVisibleAsync()
+    public async Task ClickCheckoutAsync()
     {
-        return await ProductsHeader.IsVisibleAsync() &&
-               (await ProductsHeader.InnerTextAsync()) == "Products";
+        await BtnCheckout.ClickAsync();
     }
-
+    public async Task RemoveProductFromCartAsync(string productName)
+    {
+        var removeButton = GetInventoryRemoveBtn(productName);
+        if (await removeButton.IsVisibleAsync())
+        {
+            await removeButton.ClickAsync();
+        }
+    }
+    public async Task<float> GetProductPriceAsync(string productName)
+    {
+        var priceLocator = GetInventoryItemPrice(productName);
+        if (await priceLocator.IsVisibleAsync())
+        {
+            var priceText = await priceLocator.InnerTextAsync();
+            return float.Parse(priceText.Replace("$", "").Trim());
+        }
+        else
+        {
+            throw new Exception($"Price for '{productName}' is not visible.");
+        }
+    }
 }

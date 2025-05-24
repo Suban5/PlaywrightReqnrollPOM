@@ -13,12 +13,6 @@ public sealed class CalculatorStepDefinitions
     [Given("the first number is {int}")]
     public void GivenTheFirstNumberIs(int number)
     {
-        //TODO: implement arrange (precondition) logic
-        // For storing and retrieving scenario-specific data see https://go.reqnroll.net/doc-sharingdata
-        // To use the multiline text or the table argument of the scenario,
-        // additional string/DataTable parameters can be defined on the step definition
-        // method. 
-
         firstNumber = number;
     }
 

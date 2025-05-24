@@ -1,0 +1,111 @@
+Best Practices
+Prefer GetByRole(), GetByText(), and GetByTestId() over CSS/XPath when possible
+Use test IDs (data-testid) for elements that are likely to change
+Combine locators for more stable selectors
+Avoid using indexes (like nth-child) when possible as they make tests brittle
+
+1. Text Locator: Finds elements by their text content.
+<button>Submit Form</button>
+<a href="/about">Learn more</a>
+    await page.Locator("text=Submit Form").ClickAsync();  // Exact match
+    await page.Locator("text=Learn").ClickAsync();       // Partial match
+
+    // Click a button containing text "Sub" (partial match)
+    await page.Locator("text=Sub").ClickAsync();
+
+2. CSS Locator: Uses CSS selectors to find elements.
+<div id="header">
+  <button class="btn primary">Login</button>
+  <ul class="menu">
+    <li>Home</li>
+    <li>About</li>
+  </ul>
+</div>
+    await page.Locator("#header").ClickAsync();         //id css
+    await page.Locator(".btn.primary").ClickAsync();    //class css
+    await page.Locator("ul.menu li").First.ClickAsync(); //first li method having ul with menu class
+
+3. XPath Locator; Uses XPath expressions to locate elements.
+<form>
+  <input type="text" name="username">
+  <input type="password" name="pwd">
+  <button type="submit">Sign In</button>
+</form>
+
+    await page.Locator("//button[text()='Sign In']").ClickAsync(); //text xpath
+    await page.Locator("//form//input[2]").ClickAsync();  // 2nd child of form; Password field
+   
+
+4. Role Locator: Finds elements by their ARIA role.
+<button role="button">Click Me</button>
+<nav role="navigation">
+  <a href="/">Home</a>
+</nav>
+<div role="alert">Warning message</div>
+
+    
+    await page.GetByRole(AriaRole.Button).ClickAsync();         // Click a button with role 'button'
+    await page.GetByRole(AriaRole.Navigation).Locator("text=Home").ClickAsync();
+
+5. Label Locator
+html
+<label for="email">Email Address:</label>
+<input id="email" type="email">
+<label>
+  <input type="checkbox"> Subscribe
+</label>
+
+
+    await page.GetByLabel("Email Address:").FillAsync("test@example.com");
+    await page.GetByLabel("Subscribe").CheckAsync();
+
+6. Placeholder Locator
+html
+<input type="text" placeholder="Enter your name">
+<textarea placeholder="Your message here..."></textarea>
+
+    await page.GetByPlaceholder("Enter your name").FillAsync("John Doe");
+    await page.GetByPlaceholder("Your message here...").FillAsync("Hello!");
+
+7. Title Locator
+<span title="Close" class="close-btn">X</span>
+<img src="help.png" title="Help icon">
+
+    await page.GetByTitle("Close").ClickAsync();
+    await page.GetByTitle("Help icon").ClickAsync();
+
+8. Test ID Locator
+
+<button data-testid="login-btn">Sign In</button>
+<div data-testid="product-card-123">
+  <h3>Premium Product</h3>
+</div>
+
+    await page.GetByTestId("login-btn").ClickAsync();
+    var productName = await page.GetByTestId("product-card-123").Locator("h3").InnerTextAsync();
+
+9. Chaining Locators Example
+<div class="user-panel">
+  <div class="name">John Doe</div>
+  <button class="btn">Edit</button>
+</div>
+<div class="user-panel">
+  <div class="name">Jane Smith</div>
+  <button class="btn">Edit</button>
+</div>
+
+    // Chain locators to find Jane's edit button
+    await page.Locator(".user-panel")
+            .Filter(new() { HasText = "Jane Smith" })
+            .Locator(".btn")
+            .ClickAsync();
+
+10. Filtering Locators Example
+<ul id="items">
+  <li>Item 1</li>
+  <li>Item 2</li>
+  <li>Item 3</li>
+</ul>
+
+    await page.Locator("#items li").Nth(1).ClickAsync();  // Clicks "Item 2" (0-based index)
+    await page.Locator("#items li").Last.ClickAsync();

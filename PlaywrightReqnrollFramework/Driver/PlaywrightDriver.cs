@@ -6,21 +6,14 @@ using static PlaywrightReqnrollFramework.Config.TestSettings;
 
 namespace PlaywrightReqnrollFramework.Driver;
 
-public class PlaywrightDriver
+public class PlaywrightDriver(TestSettings testSettings)
 {
 
     private IPlaywright _playwright;
-
     private IBrowser _browser;
     private IBrowserContext _context;
     private IPage _page;
-
-    private readonly TestSettings testSettings;
-    public PlaywrightDriver(TestSettings testSettings)
-    {
-        this.testSettings = testSettings;
-    }
-
+    private readonly TestSettings testSettings = testSettings;
 
     public async Task<IPage> InitializeAsync()
     {

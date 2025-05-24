@@ -1,0 +1,8 @@
+open playwright in UI mode
+    npx playwright codegen --lang=csharp 
+
+Debug existing test
+    PWDEBUG=1 dotnet test
+
+Debug existing test based on tag
+    PWDEBUG=1 dotnet test --filter "Category=invalid"
