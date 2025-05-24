@@ -34,6 +34,7 @@ jobs:
     #5. Install Playwright browsers
     - name: Install Playwright browsers
       run: |
+            cd PlaywrightReqnrollPOM
             dotnet bin/Debug/net8.0/PlaywrightReqnrollPOM.dll install
 
     # 6. Run tests with NUnit console logger
