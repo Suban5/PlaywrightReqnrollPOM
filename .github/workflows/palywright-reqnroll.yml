@@ -9,50 +9,42 @@ on:
 jobs:
   test:
     name: Run Playwright Reqnroll Tests
-    runs-on: windows-latest  
-    
+    runs-on: windows-latest
+
     steps:
-    # 1. Checkout code
-    - name: Checkout code
-      uses: actions/checkout@v4
+      # 1. Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    # 2. Setup the .NET
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x
+      # 2. Setup .NET
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
 
-    # 3. Restore dependencies
-    - name: Restore dependencies
-      run: |
-        dotnet restore
-    
-    #4. Buld the project
-    - name: Build the project
-      run: dotnet build --configuration Debug    
-   
-      # 4.1 Install Playwright .NET Tool
-    - name: Install Playwright .NET Tool
-      run: dotnet tool restore
+      # 3. Restore dependencies (including local tools)
+      - name: Restore dependencies and tools
+        run: |
+          dotnet restore
+          dotnet tool restore
 
-    #5. Install Playwright browsers
-    - name: Install Playwright browsers
-      run: dotnet playwright install
+      # 4. Build the project
+      - name: Build the project
+        run: dotnet build --configuration Debug
 
-    # 5.1 Install NUnit test logger
-    - name: Install NUnit Test Logger
-      run: dotnet tool install --global NUnit.ConsoleRunner.NetCore
+      # 5. Install Playwright browsers
+      - name: Install Playwright browsers
+        run: dotnet playwright install
 
-    # 6. Run tests with NUnit console logger
-    - name: Run Tests
-      run: dotnet test --no-build --logger "nunit;LogFilePath=TestResults/TestResults.xml"
-            
-    # 7. Upload test results (optional)
-    - name: Upload Test Results
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: test-results
-        path: |
-          TestResults/
-          
+      # 6. Run tests with NUnit XML logger
+      - name: Run Tests
+        run: dotnet test --no-build --logger "nunit;LogFilePath=TestResults/TestResults.xml"
+
+      # 7. Upload test results (optional)
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: |
+            TestResults/
