@@ -36,8 +36,8 @@ jobs:
     # 4. Install Playwright browsers
     - name: Install Playwright
       run: |
-            pwsh bin/Debug/net8.0/playwright.ps1 install
-            pwsh bin/Debug/net8.0/playwright.ps1 install-deps
+            pwsh ./bin/Debug/net8.0/playwright-cli/playwright.ps1 install
+            pwsh ./bin/Debug/net8.0/playwright-cli/playwright.ps1 install-deps
 
     # 5. Build the project
     - name: Build
