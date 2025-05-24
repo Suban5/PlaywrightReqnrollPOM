@@ -10,6 +10,7 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
     <PackageReference Include="Microsoft.Playwright" Version="1.52.0" />
     <PackageReference Include="Microsoft.Playwright.NUnit" Version="1.52.0" />
+    <PackageReference Include="NunitXml.TestLogger" Version="6.1.0" />
     <PackageReference Include="Reqnroll.NUnit" Version="2.4.1" />
     <PackageReference Include="nunit" Version="4.0.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />

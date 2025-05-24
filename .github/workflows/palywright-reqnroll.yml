@@ -34,15 +34,19 @@ jobs:
       # 4.1 Install Playwright .NET Tool
     - name: Install Playwright .NET Tool
       run: dotnet tool restore
-      
+
     #5. Install Playwright browsers
     - name: Install Playwright browsers
       run: dotnet playwright install
 
+    # 5.1 Install NUnit test logger
+    - name: Install NUnit Test Logger
+      run: dotnet tool install --global NUnit.ConsoleRunner.NetCore
+
     # 6. Run tests with NUnit console logger
     - name: Run Tests
-      run: dotnet test --no-build --logger "console;verbosity=normal" --logger "nunit;LogFilePath=TestResults/TestResults.xml"
-
+      run: dotnet test --no-build --logger "nunit;LogFilePath=TestResults/TestResults.xml"
+            
     # 7. Upload test results (optional)
     - name: Upload Test Results
       uses: actions/upload-artifact@v4
