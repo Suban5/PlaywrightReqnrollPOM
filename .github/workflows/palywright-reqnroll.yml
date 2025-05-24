@@ -9,8 +9,8 @@ on:
 jobs:
   test:
     name: Run Playwright Reqnroll Tests
-    runs-on: windows-latest  # For a list of available runner types, refer to
-                             # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+    runs-on: windows-latest  
+    
     steps:
     # 1. Checkout code
     - name: Checkout code
@@ -22,24 +22,19 @@ jobs:
       with:
         dotnet-version: 8.0.x
 
-    # 3. Install Reqnroll.Nunit and other dependencies
-    - name: Install Dependencies
+    # 3. Restore dependencies
+    - name: Restore dependencies
       run: |
-
-        # cd PlaywrightReqnrollFramework
-        # dotnet add package Reqnroll.NUnit --version 2.4.1
-        # dotnet add package Microsoft.Playwright.NUnit --version 1.52.0
-        # dotnet add package Microsoft.Playwright --version 1.52.0
         dotnet restore
     
     #4. Buld the project
-    - name: Build the project (required before install)
-      run: dotnet build    
+    - name: Build the project
+      run: dotnet build --configuration Debug    
    
     #5. Install Playwright browsers
     - name: Install Playwright browsers
       run: |
-            dotnet tool run playwright install
+            dotnet bin/Debug/net8.0/PlaywrightReqnrollPOM.dll install
 
     # 6. Run tests with NUnit console logger
     - name: Run Tests
