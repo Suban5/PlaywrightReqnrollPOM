@@ -1,4 +1,4 @@
-name: Playwright Tests with Reqnroll
+name: Playwright Tests with Reqnroll (NUnit3 + ExtentReports)
 
 on:
   push:
@@ -8,71 +8,59 @@ on:
 
 jobs:
   test:
-    name: Run Playwright Reqnroll Tests
+    name: Run Tests (NUnit3)
     runs-on: windows-latest
 
     steps:
-      # 1. Checkout code
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      # 2. Setup .NET
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
 
-      # 3. Restore dependencies and tools
-      - name: Restore dependencies and tools
+      - name: Restore and Build
         run: |
           dotnet restore
-          dotnet tool restore
+          dotnet build --configuration Release --no-restore
 
-      # 4. Build the project
-      - name: Build the project
-        run: dotnet build --configuration Debug
-
-      # 5. Install Playwright browsers
-      - name: Install Playwright browsers
+      - name: Install Playwright
         run: dotnet playwright install
 
-      # 6. Set CI environment for config
-      - name: Set ASPNETCORE_ENVIRONMENT to CI
-        run: echo "ASPNETCORE_ENVIRONMENT=CI" >> $env:GITHUB_ENV
-
-      # 7. Run tests with NUnit XML logger
-      - name: Run Tests
+      - name: Run Tests (NUnit3)
         run: |
-         dotnet test --no-build --logger "nunit;LogFilePath=TestResults/TestResults.xml"
-         Get-ChildItem -Recurse -Filter TestResults.xml
+          dotnet test --no-build --configuration Release --logger:"nunit;LogFilePath=TestResults/nunit-results.xml"
+          ls -R TestResults
+        shell: pwsh
 
-      # 8. Upload test results
-      - name: Upload Test Results
+      - name: Upload NUnit Results
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: test-results
-          path: PlaywrightReqnrollFramework/TestResults/**/*.xml
+          name: nunit-test-results
+          path: TestResults/nunit-results.xml
 
-      # 9. Install Pickles as a .NET global tool
-      - name: Install Pickles
+      - name: Publish ExtentReports
+        if: always()
         run: |
-         dotnet tool install --global Pickles.CommandLine
-         Get-ChildItem -Recurse -Filter TestResults.xml
+          if (Test-Path TestResults/ExtentReports) {
+            Compress-Archive -Path TestResults/ExtentReports/* -DestinationPath extent-reports.zip -Force
+            ls -R TestResults/ExtentReports
+          }
+        shell: pwsh
 
-      # 10. Generate Pickles Living Documentation
-      - name: Generate Pickles Living Documentation
-        run: >
-          pickles
-          --feature-directory=PlaywrightReqnrollFramework/Features
-          --output-directory=PicklesOutput
-          --test-results-format=nunit3
-          --link-results-file=PlaywrightReqnrollFramework/TestResults/TestResults.xml
-          --documentation-format=dhtml
-
-      # 11. Upload Pickles report
-      - name: Upload Pickles Living Documentation
+      - name: Upload ExtentReports
         uses: actions/upload-artifact@v4
         with:
-          name: pickles-report
-          path: PicklesOutput/
+          name: extent-reports
+          path: |
+            extent-reports.zip
+            TestResults/ExtentReports/*.html
+            TestResults/Screenshots/*.png
+
+      - name: Publish NUnit Results to GitHub
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: TestResults/nunit-results.xml
+          check_name: NUnit3 Test Results
