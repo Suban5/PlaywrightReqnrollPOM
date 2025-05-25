@@ -6,3 +6,6 @@ obj/
 *.suo
 
 *.feature.cs
+
+TestResults
+TestResults/*
