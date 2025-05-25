@@ -57,6 +57,7 @@ jobs:
         with:
           name: extent-reports
           path: |
-            PlaywrightReqnrollFramework/extent-reports.zip
+            ls -R extent-reports.zip
+            extent-reports.zip
             PlaywrightReqnrollFramework/TestResults/ExtentReports/*.html
             PlaywrightReqnrollFramework/TestResults/Screenshots/*.png
