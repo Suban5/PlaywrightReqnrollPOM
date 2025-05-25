@@ -47,7 +47,7 @@ jobs:
 
       # 8. List TestResults directory for debugging
       - name: List TestResults directory
-        run: dir /s
+        run: dir . /s
         working-directory: ${{ github.workspace }}
 
       # 9. Upload test results (use wildcard to catch all XML files)
