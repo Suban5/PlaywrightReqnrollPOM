@@ -48,3 +48,23 @@ jobs:
           name: test-results
           path: |
             TestResults/
+
+      # 8. Install Pickles as a .NET global tool
+      - name: Install Pickles
+        run: dotnet tool install --global Pickles.CommandLine
+
+      # 9. Generate Pickles report
+      - name: Generate Pickles Living Documentation
+        run: |
+          pickles \
+            --feature-directory=PlaywrightReqnrollFramework/Features \
+            --output-directory=PicklesOutput \
+            --test-results-format=NUnit \
+            --link-results-file=TestResults/TestResults.xml
+
+      # 10. Upload Pickles report
+      - name: Upload Pickles Living Documentation
+        uses: actions/upload-artifact@v4
+        with:
+          name: pickles-report
+          path: PicklesOutput/

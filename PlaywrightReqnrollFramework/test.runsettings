@@ -1,0 +1,6 @@
+<RunSettings>
+  <NUnit>
+    <OutputXmlFolderMode>UseResultDirectory</OutputXmlFolderMode>
+    <TestOutputXml>TestResults</TestOutputXml> 
+  </NUnit>
+</RunSettings>
