@@ -46,7 +46,7 @@ jobs:
 
       # 7.2 Run tests with NUnit XML logger
       - name: Run Tests
-        run: dotnet test --no-build --logger "nunit;LogFilePath=TestResults\TestResults.xml"
+        run: dotnet test --no-build --logger "nunit;LogFilePath=TestResults/TestResults.xml"
         working-directory: ${{ github.workspace }}
 
      
@@ -56,7 +56,7 @@ jobs:
         if: always()
         with:
           name: test-results
-          path: TestResults\**\*.xml
+          path: TestResults/**/*.xml
 
       # 10. Install Pickles as a .NET global tool
       - name: Install Pickles
@@ -66,10 +66,10 @@ jobs:
       - name: Generate Pickles Living Documentation
         run: >
           pickles
-          --feature-directory=PlaywrightReqnrollFramework\Features
+          --feature-directory=PlaywrightReqnrollFramework/Features
           --output-directory=PicklesOutput
           --test-results-format=NUnit
-          --link-results-file=TestResults\TestResults.xml
+          --link-results-file=TestResults/TestResults.xml
           --documentation-format=dhtml
 
       # 12. Upload Pickles report
