@@ -46,25 +46,17 @@ jobs:
 
       # 7.2 Run tests with NUnit XML logger
       - name: Run Tests
-        run: dotnet test --no-build --logger "nunit;LogFilePath=${{ github.workspace }}TestResults/TestResults.xml"
+        run: dotnet test --no-build --logger "nunit;LogFilePath=${{ github.workspace }}\TestResults\TestResults.xml"
         working-directory: ${{ github.workspace }}
 
-      # 8. List TestResults directory for debugging
-      - name: List TestResults directory
-        run: |
-          Write-Host "Current directory: $(Get-Location)"
-          Write-Host "Directory contents:"
-          Get-ChildItem -Recurse
-          Write-Host "TestResults directory contents:"
-          Get-ChildItem -Path ./TestResults -Recurse -ErrorAction Continue
-
+     
       # 9. Upload test results (use wildcard to catch all XML files)
       - name: Upload Test Results
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: test-results
-          path: ${{ github.workspace }}/TestResults/**/*.xml
+          path: ${{ github.workspace }}\TestResults\**\*.xml
 
       # 10. Install Pickles as a .NET global tool
       - name: Install Pickles
@@ -74,10 +66,11 @@ jobs:
       - name: Generate Pickles Living Documentation
         run: >
           pickles
-          --feature-directory=PlaywrightReqnrollFramework/Features
+          --feature-directory=PlaywrightReqnrollFramework\Features
           --output-directory=PicklesOutput
           --test-results-format=NUnit
-          --link-results-file=TestResults/TestResults.xml
+          --link-results-file=TestResults\TestResults.xml
+          --documentation-format=dhtml
 
       # 12. Upload Pickles report
       - name: Upload Pickles Living Documentation
