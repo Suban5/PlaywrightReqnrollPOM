@@ -22,7 +22,7 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
-      # 3. Restore dependencies (including local tools)
+      # 3. Restore dependencies and tools
       - name: Restore dependencies and tools
         run: |
           dotnet restore
@@ -36,15 +36,43 @@ jobs:
       - name: Install Playwright browsers
         run: dotnet playwright install
 
-      # 6. Run tests with NUnit XML logger
-      - name: Run Tests
-        run: dotnet test --no-build --logger "nunit;LogFilePath=TestResults/TestResults.xml"
+      # 6. Set CI environment for config
+      - name: Set ASPNETCORE_ENVIRONMENT to CI
+        run: echo "ASPNETCORE_ENVIRONMENT=CI" >> $env:GITHUB_ENV
 
-      # 7. Upload test results (optional)
+      # 7. Run tests with NUnit XML logger
+      - name: Run Tests
+        run: |
+         dotnet test --no-build --logger "nunit;LogFilePath=TestResults/TestResults.xml"
+         Get-ChildItem -Recurse -Filter TestResults.xml
+
+      # 8. Upload test results
       - name: Upload Test Results
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: test-results
-          path: |
-            TestResults/
+          path: PlaywrightReqnrollFramework/TestResults/**/*.xml
+
+      # 9. Install Pickles as a .NET global tool
+      - name: Install Pickles
+        run: |
+         dotnet tool install --global Pickles.CommandLine
+         Get-ChildItem -Recurse -Filter TestResults.xml
+
+      # 10. Generate Pickles Living Documentation
+      - name: Generate Pickles Living Documentation
+        run: >
+          pickles
+          --feature-directory=PlaywrightReqnrollFramework/Features
+          --output-directory=PicklesOutput
+          --test-results-format=nunit3
+          --link-results-file=PlaywrightReqnrollFramework/TestResults/TestResults.xml
+          --documentation-format=dhtml
+
+      # 11. Upload Pickles report
+      - name: Upload Pickles Living Documentation
+        uses: actions/upload-artifact@v4
+        with:
+          name: pickles-report
+          path: PicklesOutput/
