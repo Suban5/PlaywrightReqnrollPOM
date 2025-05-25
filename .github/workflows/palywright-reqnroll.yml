@@ -42,7 +42,7 @@ jobs:
 
       # 7. Run tests with NUnit XML logger
       - name: Run Tests
-        run: dotnet test --no-build --logger "nunit;LogFilePath=PlaywrightReqnrollFramework/TestResults/TestResults.xml"
+        run: dotnet test --no-build --logger "nunit;LogFilePath=TestResults/TestResults.xml"
 
       # 8. Upload test results
       - name: Upload Test Results
