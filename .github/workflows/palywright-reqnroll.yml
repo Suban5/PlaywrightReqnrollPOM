@@ -43,10 +43,12 @@ jobs:
       # 7. Run tests with NUnit XML logger
       - name: Run Tests
         run: dotnet test --no-build --logger "nunit;LogFilePath=TestResults/TestResults.xml"
+        working-directory: ${{ github.workspace }}
 
       # 8. List TestResults directory for debugging
       - name: List TestResults directory
         run: dir TestResults
+        working-directory: ${{ github.workspace }}
 
       # 9. Upload test results (use wildcard to catch all XML files)
       - name: Upload Test Results
