@@ -44,19 +44,23 @@ jobs:
       - name: Run Tests
         run: dotnet test --no-build --logger "nunit;LogFilePath=TestResults/TestResults.xml"
 
-      # 8. Upload test results
+      # 8. List TestResults directory for debugging
+      - name: List TestResults directory
+        run: dir TestResults
+
+      # 9. Upload test results (use wildcard to catch all XML files)
       - name: Upload Test Results
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: test-results
-          path: TestResults/
+          path: TestResults/**/*.xml
 
-      # 9. Install Pickles as a .NET global tool
+      # 10. Install Pickles as a .NET global tool
       - name: Install Pickles
         run: dotnet tool install --global Pickles.CommandLine
 
-      # 10. Generate Pickles Living Documentation (single line for PowerShell)
+      # 11. Generate Pickles Living Documentation (single line for PowerShell)
       - name: Generate Pickles Living Documentation
         run: >
           pickles
@@ -65,7 +69,7 @@ jobs:
           --test-results-format=NUnit
           --link-results-file=TestResults/TestResults.xml
 
-      # 11. Upload Pickles report
+      # 12. Upload Pickles report
       - name: Upload Pickles Living Documentation
         uses: actions/upload-artifact@v4
         with:
