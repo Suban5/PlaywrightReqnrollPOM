@@ -41,7 +41,7 @@ jobs:
         if: always()
         with:
           name: nunit-test-results
-          path: TestResults/nunit-results.xml
+          path: PlaywrightReqnrollFramework/TestResults/nunit-results.xml
 
       - name: Publish ExtentReports
         if: always()
@@ -57,13 +57,6 @@ jobs:
         with:
           name: extent-reports
           path: |
-            extent-reports.zip
-            TestResults/ExtentReports/*.html
-            TestResults/Screenshots/*.png
-
-      - name: Publish NUnit Results to GitHub
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        if: always()
-        with:
-          files: TestResults/nunit-results.xml
-          check_name: NUnit3 Test Results
+            PlaywrightReqnrollFramework/extent-reports.zip
+            PlaywrightReqnrollFramework/TestResults/ExtentReports/*.html
+            PlaywrightReqnrollFramework/TestResults/Screenshots/*.png
