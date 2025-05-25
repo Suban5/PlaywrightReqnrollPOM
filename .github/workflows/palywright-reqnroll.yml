@@ -22,7 +22,7 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
-      # 3. Restore dependencies (including local tools)
+      # 3. Restore dependencies and tools
       - name: Restore dependencies and tools
         run: |
           dotnet restore
@@ -36,33 +36,36 @@ jobs:
       - name: Install Playwright browsers
         run: dotnet playwright install
 
-      # 6. Run tests with NUnit XML logger
+      # 6. Set CI environment for config
+      - name: Set ASPNETCORE_ENVIRONMENT to CI
+        run: echo "ASPNETCORE_ENVIRONMENT=CI" >> $env:GITHUB_ENV
+
+      # 7. Run tests with NUnit XML logger
       - name: Run Tests
         run: dotnet test --no-build --logger "nunit;LogFilePath=TestResults/TestResults.xml"
 
-      # 7. Upload test results (optional)
+      # 8. Upload test results
       - name: Upload Test Results
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: test-results
-          path: |
-            TestResults/
+          path: TestResults/
 
-      # 8. Install Pickles as a .NET global tool
+      # 9. Install Pickles as a .NET global tool
       - name: Install Pickles
         run: dotnet tool install --global Pickles.CommandLine
 
-      # 9. Generate Pickles report
+      # 10. Generate Pickles Living Documentation (single line for PowerShell)
       - name: Generate Pickles Living Documentation
-        run: |
-          pickles \
-            --feature-directory=PlaywrightReqnrollFramework/Features \
-            --output-directory=PicklesOutput \
-            --test-results-format=NUnit \
-            --link-results-file=TestResults/TestResults.xml
+        run: >
+          pickles
+          --feature-directory=PlaywrightReqnrollFramework/Features
+          --output-directory=PicklesOutput
+          --test-results-format=NUnit
+          --link-results-file=TestResults/TestResults.xml
 
-      # 10. Upload Pickles report
+      # 11. Upload Pickles report
       - name: Upload Pickles Living Documentation
         uses: actions/upload-artifact@v4
         with:
