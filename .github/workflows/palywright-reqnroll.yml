@@ -46,7 +46,7 @@ jobs:
 
       # 7.2 Run tests with NUnit XML logger
       - name: Run Tests
-        run: dotnet test --no-build --logger "nunit;LogFilePath=${{ github.workspace }}\TestResults\TestResults.xml"
+        run: dotnet test --no-build --logger "nunit;LogFilePath=TestResults\TestResults.xml"
         working-directory: ${{ github.workspace }}
 
      
@@ -56,7 +56,7 @@ jobs:
         if: always()
         with:
           name: test-results
-          path: ${{ github.workspace }}\TestResults\**\*.xml
+          path: TestResults\**\*.xml
 
       # 10. Install Pickles as a .NET global tool
       - name: Install Pickles
