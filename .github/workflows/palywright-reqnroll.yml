@@ -40,20 +40,11 @@ jobs:
       - name: Set ASPNETCORE_ENVIRONMENT to CI
         run: echo "ASPNETCORE_ENVIRONMENT=CI" >> $env:GITHUB_ENV
 
-      # 7.1 Create TestResults directory
-      - name: Create TestResults directory
-        run: mkdir TestResults
-
-      # 7.2 Run tests with NUnit XML logger
+      # 7. Run tests with NUnit XML logger
       - name: Run Tests
-        run: |
-         dotnet test --no-build --logger "nunit;LogFilePath=TestResults/TestResults.xml"
-         Get-ChildItem -Recurse -Filter TestResults.xml
-        working-directory: ${{ github.workspace }}
-        
+        run: dotnet test --no-build --logger "nunit;LogFilePath=PlaywrightReqnrollFramework/TestResults/TestResults.xml"
 
-     
-      # 9. Upload test results (use wildcard to catch all XML files)
+      # 8. Upload test results
       - name: Upload Test Results
         uses: actions/upload-artifact@v4
         if: always()
@@ -61,21 +52,21 @@ jobs:
           name: test-results
           path: PlaywrightReqnrollFramework/TestResults/**/*.xml
 
-      # 10. Install Pickles as a .NET global tool
+      # 9. Install Pickles as a .NET global tool
       - name: Install Pickles
         run: dotnet tool install --global Pickles.CommandLine
 
-      # 11. Generate Pickles Living Documentation (single line for PowerShell)
+      # 10. Generate Pickles Living Documentation
       - name: Generate Pickles Living Documentation
         run: >
           pickles
           --feature-directory=PlaywrightReqnrollFramework/Features
           --output-directory=PicklesOutput
           --test-results-format=NUnit
-          --link-results-file=TestResults/TestResults.xml
+          --link-results-file=PlaywrightReqnrollFramework/TestResults/TestResults.xml
           --documentation-format=dhtml
 
-      # 12. Upload Pickles report
+      # 11. Upload Pickles report
       - name: Upload Pickles Living Documentation
         uses: actions/upload-artifact@v4
         with:
