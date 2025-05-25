@@ -13,5 +13,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Run Tests
+        run: dotnet test --no-build --logger "nunit;LogFilePath=TestResults/TestResults.xml"
+
       - name: List all files recursively
         run: Get-ChildItem -Recurse -File
