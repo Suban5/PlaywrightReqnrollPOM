@@ -23,6 +23,9 @@ jobs:
         run: |
           dotnet restore
           dotnet build --configuration Release --no-restore
+      
+      - name: Restore .NET tools
+        run: dotnet tool restore    
 
       - name: Install Playwright
         run: dotnet playwright install
