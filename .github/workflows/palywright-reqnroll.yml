@@ -66,7 +66,7 @@ jobs:
           pickles
           --feature-directory=PlaywrightReqnrollFramework/Features
           --output-directory=PicklesOutput
-          --test-results-format=NUnit
+          --test-results-format=nunit3
           --link-results-file=PlaywrightReqnrollFramework/TestResults/TestResults.xml
           --documentation-format=dhtml
 
