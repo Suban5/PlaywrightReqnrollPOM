@@ -42,7 +42,9 @@ jobs:
 
       # 7. Run tests with NUnit XML logger
       - name: Run Tests
-        run: dotnet test --no-build --logger "nunit;LogFilePath=TestResults/TestResults.xml"
+        run: |
+         dotnet test --no-build --logger "nunit;LogFilePath=TestResults/TestResults.xml"
+         Get-ChildItem -Recurse -Filter TestResults.xml
 
       # 8. Upload test results
       - name: Upload Test Results
@@ -54,7 +56,9 @@ jobs:
 
       # 9. Install Pickles as a .NET global tool
       - name: Install Pickles
-        run: dotnet tool install --global Pickles.CommandLine
+        run: |
+         dotnet tool install --global Pickles.CommandLine
+         Get-ChildItem -Recurse -Filter TestResults.xml
 
       # 10. Generate Pickles Living Documentation
       - name: Generate Pickles Living Documentation
