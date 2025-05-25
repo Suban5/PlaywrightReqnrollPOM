@@ -59,7 +59,7 @@ jobs:
         if: always()
         with:
           name: test-results
-          path: TestResults/**/*.xml
+          path: PlaywrightReqnrollFramework/TestResults/**/*.xml
 
       # 10. Install Pickles as a .NET global tool
       - name: Install Pickles
