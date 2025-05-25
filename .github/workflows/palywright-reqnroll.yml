@@ -40,15 +40,23 @@ jobs:
       - name: Set ASPNETCORE_ENVIRONMENT to CI
         run: echo "ASPNETCORE_ENVIRONMENT=CI" >> $env:GITHUB_ENV
 
-      # 7. Run tests with NUnit XML logger
+      # 7.1 Create TestResults directory
+      - name: Create TestResults directory
+        run: mkdir TestResults
+
+      # 7.2 Run tests with NUnit XML logger
       - name: Run Tests
-        run: dotnet test --no-build --logger "nunit;LogFilePath=TestResults/TestResults.xml"
+        run: dotnet test --no-build --logger "nunit;LogFilePath=${{ github.workspace }}TestResults/TestResults.xml"
         working-directory: ${{ github.workspace }}
 
       # 8. List TestResults directory for debugging
       - name: List TestResults directory
-        run: Get-ChildItem -Recurse
-        working-directory: ${{ github.workspace }}
+        run: |
+          Write-Host "Current directory: $(Get-Location)"
+          Write-Host "Directory contents:"
+          Get-ChildItem -Recurse
+          Write-Host "TestResults directory contents:"
+          Get-ChildItem -Path ./TestResults -Recurse -ErrorAction Continue
 
       # 9. Upload test results (use wildcard to catch all XML files)
       - name: Upload Test Results
@@ -56,7 +64,7 @@ jobs:
         if: always()
         with:
           name: test-results
-          path: TestResults/**/*.xml
+          path: ${{ github.workspace }}/TestResults/**/*.xml
 
       # 10. Install Pickles as a .NET global tool
       - name: Install Pickles
