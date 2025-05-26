@@ -52,6 +52,8 @@ cd PlaywrightReqnrollPOM
 
 ```bash
 dotnet restore
+dotnet new tool-manifest # if you haven't already
+dotnet tool install Microsoft.Playwright.CLI
 dotnet tool restore
 dotnet playwright install
 ```
