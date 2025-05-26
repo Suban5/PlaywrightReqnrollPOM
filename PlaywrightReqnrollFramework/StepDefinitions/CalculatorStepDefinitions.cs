@@ -4,12 +4,13 @@ using Reqnroll;
 namespace PlaywrightReqnrollFramework.StepDefinitions;
 
 [Binding]
-public sealed class CalculatorStepDefinitions
+public sealed class CalculatorStepDefinitions(ScenarioContext scenarioContext) : BaseSteps(scenarioContext)
 {
     // For additional details on Reqnroll step definitions see https://go.reqnroll.net/doc-stepdef
     private int firstNumber;
     private int secondNumber;
     private int result;
+
     [Given("the first number is {int}")]
     public void GivenTheFirstNumberIs(int number)
     {
