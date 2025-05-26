@@ -26,7 +26,7 @@ A robust, scalable, and maintainable **web automation testing framework** that c
 |------------------|-----------------------------------|
 | Test Automation  | Playwright (.NET)                 |
 | BDD Framework    | Reqnroll                          |
-| Language         | C# (.NET 6+/7+/8+)                |
+| Language         | C# (.NET 8+)                |
 | Design Pattern   | Page Object Model (POM)           |
 | Reporting        | ExtentReports                     |
 | CI/CD            | GitHub Actions                    |
@@ -38,7 +38,7 @@ A robust, scalable, and maintainable **web automation testing framework** that c
 
 ### 1. Prerequisites
 
-- [.NET 6+ SDK](https://dotnet.microsoft.com/download)
+- [.NET 8+ SDK](https://dotnet.microsoft.com/download)
 - IDE: [VS Code](https://code.visualstudio.com/), [Visual Studio](https://visualstudio.microsoft.com/), or [JetBrains Rider](https://www.jetbrains.com/rider/)
 
 ### 2. Clone the Repository
@@ -51,11 +51,12 @@ cd PlaywrightReqnrollPOM
 ### 3. Install Dependencies & Browsers
 
 ```bash
+##Note: need to be inside project folder
 dotnet restore
 dotnet new tool-manifest # if you haven't already
 dotnet tool install Microsoft.Playwright.CLI
 dotnet tool restore
-dotnet playwright install
+dotnet playwright install 
 ```
 
 ### 4. Build the Project
@@ -105,12 +106,6 @@ PlaywrightReqnrollFramework/
 ## 🤝 Contributing
 
 Contributions are welcome! Please open issues or submit pull requests for improvements, bug fixes, or new features.
-
----
-
-## 📄 License
-
-This project is licensed under the [MIT License](LICENSE).
 
 ---
 

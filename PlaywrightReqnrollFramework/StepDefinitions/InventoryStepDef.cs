@@ -7,13 +7,9 @@ using Reqnroll;
 namespace PlaywrightReqnrollFramework.StepDefinitions;
 
 [Binding]
-public class InventoryStepDef : BasePage
+public class InventoryStepDef(ScenarioContext scenarioContext) : BasePage(scenarioContext)
 {
     private float totalPrice = 0.0f;
-    public InventoryStepDef(ScenarioContext scenarioContext) : base(scenarioContext)
-    {
-       
-    }
 
     [When(@"I add following item to the cart")]
     public void WhenIaddfollowingitemtothecart(DataTable table)
