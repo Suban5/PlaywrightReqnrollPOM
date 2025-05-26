@@ -42,23 +42,3 @@ jobs:
         with:
           name: nunit-test-results
           path: PlaywrightReqnrollFramework/TestResults/nunit-results.xml
-
-      - name: Publish ExtentReports
-        if: always()
-        run: |
-          if (Test-Path TestResults/ExtentReports) {
-            Compress-Archive -Path TestResults/ExtentReports/* -DestinationPath extent-reports.zip -Force
-            ls -R TestResults/ExtentReports
-          }
-        shell: pwsh
-      - name: Locate extent-reports.zip
-        run: Get-ChildItem -Recurse -File -Filter extent-reports.zip
-        shell: pwsh
-      - name: Upload ExtentReports
-        uses: actions/upload-artifact@v4
-        with:
-          name: extent-reports
-          path: |
-            extent-reports.zip
-            PlaywrightReqnrollFramework/TestResults/ExtentReports/*.html
-            PlaywrightReqnrollFramework/TestResults/Screenshots/*.png
