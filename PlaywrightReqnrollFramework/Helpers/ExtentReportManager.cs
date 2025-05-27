@@ -4,7 +4,7 @@ using AventStack.ExtentReports;
 using AventStack.ExtentReports.Gherkin.Model;
 using AventStack.ExtentReports.Reporter;
 
-namespace PlaywrightReqnrollFramework.Helper;
+namespace PlaywrightReqnrollFramework.Helpers;
 
 public static class ExtentReportManager
 {

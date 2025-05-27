@@ -7,5 +7,5 @@ obj/
 
 *.feature.cs
 
-TestResults
-TestResults/*
+TestResults/
+Reports/
