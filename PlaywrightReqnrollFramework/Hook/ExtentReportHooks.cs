@@ -4,10 +4,10 @@ using AventStack.ExtentReports;
 using AventStack.ExtentReports.Gherkin.Model;
 using AventStack.ExtentReports.Reporter;
 using Microsoft.Playwright;
-using PlaywrightReqnrollFramework.Helper;
+using PlaywrightReqnrollFramework.Helpers;
 using Reqnroll;
 using Reqnroll.Bindings;
-using static PlaywrightReqnrollFramework.Helper.ExtentReportManager;
+using static PlaywrightReqnrollFramework.Helpers.ExtentReportManager;
 
 namespace PlaywrightReqnrollFramework.Hook;
 
