@@ -8,8 +8,10 @@ on:
 
 jobs:
   test:
-    name: Run Tests (NUnit3)
+    name: Run Tests
     runs-on: windows-latest
+    env:
+      ENVIRONMENT: CI
 
     steps:
       - uses: actions/checkout@v4
@@ -31,10 +33,7 @@ jobs:
         run: dotnet playwright install
 
       - name: Run Tests (NUnit3)
-        run: |
-          dotnet test --no-build --configuration Release --logger:"nunit;LogFilePath=TestResults/nunit-results.xml"
-          ls -R TestResults
-        shell: pwsh
+        run: dotnet test --no-build --configuration Release --logger:"nunit;LogFilePath=TestResults/nunit-results.xml"
 
       - name: Upload NUnit Results
         uses: actions/upload-artifact@v4
