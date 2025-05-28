@@ -1,15 +1,13 @@
 using System;
 using System.IO;
 using AventStack.ExtentReports;
-using AventStack.ExtentReports.Gherkin.Model;
-using AventStack.ExtentReports.Reporter;
 using Microsoft.Playwright;
 using PlaywrightReqnrollFramework.Helpers;
 using Reqnroll;
 using Reqnroll.Bindings;
 using static PlaywrightReqnrollFramework.Helpers.ExtentReportManager;
 
-namespace PlaywrightReqnrollFramework.Hook;
+namespace PlaywrightReqnrollFramework.UIHook;
 
 [Binding]
 public class ExtentReportHooks(ScenarioContext scenarioContext, FeatureContext featureContext)

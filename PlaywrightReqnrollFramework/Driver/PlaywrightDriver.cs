@@ -2,18 +2,18 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.Playwright;
 using PlaywrightReqnrollFramework.Config;
-using static PlaywrightReqnrollFramework.Config.TestSettings;
+using static PlaywrightReqnrollFramework.Config.UITestSettings;
 
 namespace PlaywrightReqnrollFramework.Driver;
 
-public class PlaywrightDriver(TestSettings testSettings)
+public class PlaywrightDriver(UITestSettings uiTestSettings)
 {
 
     private IPlaywright _playwright;
     private IBrowser _browser;
     private IBrowserContext _context;
     private IPage _page;
-    private readonly TestSettings testSettings = testSettings;
+    private readonly UITestSettings _uiTestSettings = uiTestSettings;
 
     public async Task<IPage> InitializeAsync()
     {
@@ -41,11 +41,11 @@ public class PlaywrightDriver(TestSettings testSettings)
         // Browser Type Launch Options
         var launchOptions = new BrowserTypeLaunchOptions
         {
-            Headless = testSettings.Headless, // Set headless mode based on the configuration
-            SlowMo = testSettings.SlowMo // Slow down operations by 50ms
+            Headless = _uiTestSettings.Headless, // Set headless mode based on the configuration
+            SlowMo = _uiTestSettings.SlowMo // Slow down operations by 50ms
         };
 
-        switch (testSettings.BrowserType)
+        switch (_uiTestSettings.BrowserType)
         {
             case BrowserTypeEnum.Firefox:
                 return await _playwright.Firefox.LaunchAsync(launchOptions);

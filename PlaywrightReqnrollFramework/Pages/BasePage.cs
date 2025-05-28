@@ -11,7 +11,7 @@ public abstract class BasePage(ScenarioContext scenarioContext)
     protected readonly IPage _page = scenarioContext.Get<IPage>("currentPage");
 
     protected readonly ScenarioContext _scenarioContext = scenarioContext;
-    protected readonly TestSettings _testSettings = scenarioContext.Get<TestSettings>("testSettings");
+    protected readonly UITestSettings uITestSettings = scenarioContext.Get<UITestSettings>("uiTestSettings");
 
    
 }

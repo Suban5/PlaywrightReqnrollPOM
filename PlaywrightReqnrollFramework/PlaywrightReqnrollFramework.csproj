@@ -25,4 +25,8 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features/API/" />
+  </ItemGroup>
+
 </Project>

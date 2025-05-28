@@ -2,9 +2,16 @@
   "sdk": {
     "version": "SDK_VERSION"
   },
-  "BaseUrl" : "https://www.saucedemo.com",
-  "Headless": false,
-  "SlowMo": 500,
-  "Timeout": 20000,
-  "BrowserType": "Firefox"  
+  "UITestSettings": {
+    "Browser": "Firefox",
+    "BaseUrl": "https://www.saucedemo.com",
+    "Headless": false,
+    "SlowMo": 500,
+    "Timeout": 20000,
+    "BrowserType": "Firefox"
+  },
+  "ApiTestSettings": {
+    "BaseUrl": "https://reqres.in/api",
+    "ApiKey": "reqres-free-v1"
+  }
 }
