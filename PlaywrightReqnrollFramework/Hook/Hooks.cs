@@ -23,22 +23,17 @@ public class Hooks(ScenarioContext scenarioContext)
     [BeforeScenario("@web")]
     public async Task IntializePlaywright()
     {
-        var settings = ConfigReader.LoadSettings();
-        TestSettings testSettings = new TestSettings
-        {
-            Headless = settings.Headless, // Set to true for headless mode
-            SlowMo = settings.SlowMo, // Slow down operations by ms
-            Timeout = settings.Timeout, // Slow down operations by ms
-            BaseUrl = settings.BaseUrl, // Set your base URL
-            BrowserType = settings.BrowserType // Choose your browser type
-        };
+        // Load settings directly from configuration
+        var testSettings = ConfigReader.LoadSettings();
+        
         _driver = new PlaywrightDriver(testSettings);
         var page = await _driver.InitializeAsync();
-        page.SetDefaultTimeout(testSettings.Timeout);
+        
+        // Set default timeout (convert seconds to milliseconds for Playwright)
+        page.SetDefaultTimeout(testSettings.Timeout * 1000);
+        
         _scenarioContext.Set(page, "currentPage");
         _scenarioContext.Set(testSettings, "testSettings");
-
-
     }
 
     [AfterScenario("@web")]

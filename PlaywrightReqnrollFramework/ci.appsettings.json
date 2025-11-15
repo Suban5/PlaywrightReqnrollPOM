@@ -5,6 +5,6 @@
   "BaseUrl" : "https://www.saucedemo.com",
   "Headless": true,
   "SlowMo": 0,
-  "Timeout": 20000,
+  "Timeout": 30,
   "BrowserType": "Firefox"  
 }

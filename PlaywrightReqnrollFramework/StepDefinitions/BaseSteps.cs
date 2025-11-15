@@ -13,12 +13,10 @@ public class BaseSteps
         Factory = new PageFactory(scenarioContext);
     }
 
-    protected InventoryPage InventoryPage => Factory.GetPage<InventoryPage>();
-    protected ProductPage ProductPage => Factory.GetPage<ProductPage>();
-    protected CheckoutPage CheckoutPage => Factory.GetPage<CheckoutPage>();
-    protected CheckoutOverviewPage CheckoutOverviewPage => Factory.GetPage<CheckoutOverviewPage>();
-    protected CheckoutCompletePage CheckoutCompletePage => Factory.GetPage<CheckoutCompletePage>();
-
-    protected LoginPage LoginPage => Factory.GetPage<LoginPage>();
-    
+    /// <summary>
+    /// Gets an instance of the specified page type from the PageFactory.
+    /// </summary>
+    /// <typeparam name="T">The type of page to retrieve, must inherit from BasePage</typeparam>
+    /// <returns>An instance of the requested page</returns>
+    protected T Page<T>() where T : BasePage => Factory.GetPage<T>();
 }
