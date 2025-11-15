@@ -66,13 +66,12 @@ public class InventoryStepDef(ScenarioContext scenarioContext) : BaseSteps(scena
 
 
     [When(@"I fill the checkout form with following details")]
-    public void WhenIfillthecheckoutformwithfollowingdetails(DataTable table)
+    public async Task WhenIfillthecheckoutformwithfollowingdetails(DataTable table)
     {
-        //CrateInstance only fetch first row of the table
+        //CreateInstance only fetch first row of the table
         //If you want to fetch all rows, use CreateSet<T>() method
         var details = table.CreateInstance<CheckoutDetails>();
-        Page<CheckoutPage>().FillCheckoutFormAsync(details.FirstName, details.LastName, details.PostalCode).GetAwaiter().GetResult();
-
+        await Page<CheckoutPage>().FillCheckoutFormAsync(details.FirstName, details.LastName, details.PostalCode);
     }
 
 
