@@ -23,13 +23,6 @@ public class CheckoutCompletePage(ScenarioContext scenarioContext) : BasePage(sc
     }
     public async Task ClickBackHomeButtonAsync()
     {
-        if (await BackHomeButton.IsVisibleAsync())
-        {
-            await BackHomeButton.ClickAsync();
-        }
-        else
-        {
-            throw new Exception("Back Home button is not visible.");
-        }
+        await BackHomeButton.ClickAsync();
     }
 }

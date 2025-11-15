@@ -46,22 +46,12 @@ public class InventoryPage(ScenarioContext scenarioContext) : BasePage(scenarioC
     public async Task RemoveProductFromCartAsync(string productName)
     {
         var removeButton = GetInventoryRemoveBtn(productName);
-        if (await removeButton.IsVisibleAsync())
-        {
-            await removeButton.ClickAsync();
-        }
+        await removeButton.ClickAsync();
     }
-    public async Task<float> GetProductPriceAsync(string productName)
+    public async Task<decimal> GetProductPriceAsync(string productName)
     {
         var priceLocator = GetInventoryItemPrice(productName);
-        if (await priceLocator.IsVisibleAsync())
-        {
-            var priceText = await priceLocator.InnerTextAsync();
-            return float.Parse(priceText.Replace("$", "").Trim());
-        }
-        else
-        {
-            throw new Exception($"Price for '{productName}' is not visible.");
-        }
+        var priceText = await priceLocator.InnerTextAsync();
+        return ParsePrice(priceText);
     }
 }

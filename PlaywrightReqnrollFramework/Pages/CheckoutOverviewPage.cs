@@ -40,81 +40,54 @@ public class CheckoutOverviewPage(ScenarioContext scenarioContext) : BasePage(sc
         return await title.IsVisibleAsync() && (await title.InnerTextAsync()) == "Checkout: Overview";
     }
 
-    public async Task IsProductInCheckoutOverviewAsync(string productName)
+    public async Task<bool> IsProductInCheckoutOverviewAsync(string productName)
     {
         var productLocator = GetProductName(productName);
-        if (!await productLocator.IsVisibleAsync())
-        {
-            throw new Exception($"Product '{productName}' is not present in the checkout overview.");
-        }
+        return await productLocator.IsVisibleAsync();
     }
-    public async Task<float> GetProductPriceAsync(string productName)
+
+    public async Task<decimal> GetProductPriceAsync(string productName)
     {
         var priceLocator = GetProductPrice(productName);
-        if (!await priceLocator.IsVisibleAsync())
-        {
-            throw new Exception($"Product '{productName}' is not present in the checkout overview.");
-        }
         var priceText = await priceLocator.InnerTextAsync();
-        return float.Parse(priceText.Replace("$", ""));
+        return ParsePrice(priceText);
     }
-    public async Task<float> GetItemTotalAsync()
+
+    public async Task<decimal> GetItemTotalAsync()
     {
         var itemTotalText = await ItemTotal.InnerTextAsync();
-        return float.Parse(itemTotalText.Replace("Item total: $", ""));
+        return ParsePrice(itemTotalText);
     }
-    public async Task<float> GetTaxAsync()
+
+    public async Task<decimal> GetTaxAsync()
     {
         var taxText = await Tax.InnerTextAsync();
-        return float.Parse(taxText.Replace("Tax: $", ""));
+        return ParsePrice(taxText);
     }
-    public async Task<float> GetTotalAsync()
+
+    public async Task<decimal> GetTotalAsync()
     {
         var totalText = await Total.InnerTextAsync();
-        return float.Parse(totalText.Replace("Total: $", ""));
+        return ParsePrice(totalText);
     }
+
     public async Task ClickFinishButtonAsync()
     {
-        if (await FinishButton.IsVisibleAsync())
-        {
-            await FinishButton.ClickAsync();
-        }
-        else
-        {
-            throw new Exception("Finish button is not visible.");
-        }
+        await FinishButton.ClickAsync();
     }
+
     public async Task ClickCancelButtonAsync()
     {
-        if (await CancelButton.IsVisibleAsync())
-        {
-            await CancelButton.ClickAsync();
-        }
-        else
-        {
-            throw new Exception("Cancel button is not visible.");
-        }
+        await CancelButton.ClickAsync();
     }
+
     public async Task<string> GetPaymentInfoAsync()
     {
-        if (await PaymentInfo.IsVisibleAsync())
-        {
-            return await PaymentInfo.InnerTextAsync();
-        }
-        else
-        {
-            throw new Exception("Payment information is not visible.");
-        }
+        return await PaymentInfo.InnerTextAsync();
     }
+
     public async Task<string> GetShippingInfoAsync()
     {
-        if (await ShippingInfo.IsVisibleAsync())
-        {
-            return await ShippingInfo.InnerTextAsync();
-        }
-        else
-        {
-            throw new Exception("Shipping information is not visible.");
-        }
+        return await ShippingInfo.InnerTextAsync();
     }
 }

@@ -55,26 +55,14 @@ public class ProductPage(ScenarioContext scenarioContext) : BasePage(scenarioCon
     public async Task AddProductToCartAsync(string productName)
     {
         var addToCartButton = GetAddToCartButton(productName);
-        if (await addToCartButton.IsVisibleAsync())
-        {
-            await addToCartButton.ClickAsync();
-        }
-        else
-        {
-            throw new Exception($"Add to cart button for '{productName}' is not visible.");
-        }
+        await addToCartButton.ClickAsync();
     }
-    public async Task<string> GetProductPriceAsync(string productName)
+
+    public async Task<decimal> GetProductPriceAsync(string productName)
     {
         var priceLocator = GetProductPrice(productName);
-        if (await priceLocator.IsVisibleAsync())
-        {
-            return priceLocator.InnerTextAsync().Result.Replace("$", "").Trim();
-        }
-        else
-        {
-            throw new Exception($"Price for '{productName}' is not visible.");
-        }
+        var priceText = await priceLocator.InnerTextAsync();
+        return ParsePrice(priceText);
     }
     public async Task<bool> IsProductInCartAsync(string productName)
     {

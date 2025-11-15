@@ -10,7 +10,7 @@ namespace PlaywrightReqnrollFramework.StepDefinitions;
 [Binding]
 public class InventoryStepDef(ScenarioContext scenarioContext) : BaseSteps(scenarioContext)
 {
-    private float totalPrice = 0.0f;
+    private decimal totalPrice = 0.0m;
 
     [When(@"I add following item to the cart")]
     public async Task WhenIaddfollowingitemtothecart(DataTable table)
@@ -21,7 +21,7 @@ public class InventoryStepDef(ScenarioContext scenarioContext) : BaseSteps(scena
         {
             await Page<ProductPage>().AddProductToCartAsync(item.ItemName);
             var itemPrice = await Page<ProductPage>().GetProductPriceAsync(item.ItemName);
-            totalPrice += float.Parse(itemPrice);
+            totalPrice += itemPrice;
 
         }
         Console.WriteLine($"Total Price of items in cart: {totalPrice}");
@@ -44,7 +44,7 @@ public class InventoryStepDef(ScenarioContext scenarioContext) : BaseSteps(scena
         {
             bool isProductVisible = await Page<InventoryPage>().isProductInInventoryAsync(item.ItemName);
             Assert.That(isProductVisible, Is.True, $"Product '{item.ItemName}' is not visible in the inventory.");
-            float productPrice = await Page<InventoryPage>().GetProductPriceAsync(item.ItemName);
+            decimal productPrice = await Page<InventoryPage>().GetProductPriceAsync(item.ItemName);
             Assert.That(productPrice, Is.EqualTo(item.ItemPrice), $"Product price for '{item.ItemName}' does not match. Expected: {item.ItemPrice}, Actual: {productPrice}");
         }
     }
@@ -97,33 +97,33 @@ public class InventoryStepDef(ScenarioContext scenarioContext) : BaseSteps(scena
 
         foreach (var item in items)
         {
-            await Page<CheckoutOverviewPage>().IsProductInCheckoutOverviewAsync(item.ItemName);
-            float productPrice = await Page<CheckoutOverviewPage>().GetProductPriceAsync(item.ItemName);
+            bool isProductVisible = await Page<CheckoutOverviewPage>().IsProductInCheckoutOverviewAsync(item.ItemName);
+            Assert.That(isProductVisible, Is.True, $"Product '{item.ItemName}' is not visible in the checkout overview.");
+            decimal productPrice = await Page<CheckoutOverviewPage>().GetProductPriceAsync(item.ItemName);
             Assert.That(productPrice, Is.EqualTo(item.ItemPrice), $"Product price for '{item.ItemName}' does not match. Expected: {item.ItemPrice}, Actual: {productPrice}");
         }
     }
 
 
-    [Then(@"The Item total should be {float}")]
-    public async Task ThenTheItemtotalshouldbeAsync(float expectedItemTotal)
+    [Then(@"The Item total should be {decimal}")]
+    public async Task ThenTheItemtotalshouldbeAsync(decimal expectedItemTotal)
     {
-
-        float actualItemTotal = await Page<CheckoutOverviewPage>().GetItemTotalAsync();
+        decimal actualItemTotal = await Page<CheckoutOverviewPage>().GetItemTotalAsync();
         Assert.That(actualItemTotal, Is.EqualTo(expectedItemTotal), $"Expected Item Total: {expectedItemTotal}, Actual Item Total: {actualItemTotal}");
     }
 
 
-    [Then(@"The Tax should be {float}")]
-    public async Task ThenTheTaxshouldbeAsync(float expectedTax)
+    [Then(@"The Tax should be {decimal}")]
+    public async Task ThenTheTaxshouldbeAsync(decimal expectedTax)
     {
-        float actualTax = await Page<CheckoutOverviewPage>().GetTaxAsync();
+        decimal actualTax = await Page<CheckoutOverviewPage>().GetTaxAsync();
         Assert.That(actualTax, Is.EqualTo(expectedTax), $"Expected Tax: {expectedTax}, Actual Tax: {actualTax}");
     }
 
-    [Then(@"The Total should be {float}")]
-    public async Task ThenTheTotalshouldbeAsync(float expectedGrandTotal)
+    [Then(@"The Total should be {decimal}")]
+    public async Task ThenTheTotalshouldbeAsync(decimal expectedGrandTotal)
     {
-        float actualTotal = await Page<CheckoutOverviewPage>().GetTotalAsync();
+        decimal actualTotal = await Page<CheckoutOverviewPage>().GetTotalAsync();
         Assert.That(actualTotal, Is.EqualTo(expectedGrandTotal), $"Expected Total: {expectedGrandTotal}, Actual Total: {actualTotal}");
     }
 
