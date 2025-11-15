@@ -1,4 +1,3 @@
-using System.Data;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using PlaywrightReqnrollFramework.Pages;
