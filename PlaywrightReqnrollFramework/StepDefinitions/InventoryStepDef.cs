@@ -19,8 +19,8 @@ public class InventoryStepDef(ScenarioContext scenarioContext) : BaseSteps(scena
 
         foreach (var item in items)
         {
-            await ProductPage.AddProductToCartAsync(item.ItemName);
-            var itemPrice = await ProductPage.GetProductPriceAsync(item.ItemName);
+            await Page<ProductPage>().AddProductToCartAsync(item.ItemName);
+            var itemPrice = await Page<ProductPage>().GetProductPriceAsync(item.ItemName);
             totalPrice += float.Parse(itemPrice);
 
         }
@@ -31,7 +31,7 @@ public class InventoryStepDef(ScenarioContext scenarioContext) : BaseSteps(scena
     [Then(@"I navigate to the cart")]
     public async Task ThenInavigatetothecartAsync()
     {
-       await ProductPage.NavigateToCartAsync();
+       await Page<ProductPage>().NavigateToCartAsync();
     }
 
 
@@ -42,9 +42,9 @@ public class InventoryStepDef(ScenarioContext scenarioContext) : BaseSteps(scena
 
         foreach (var item in items)
         {
-            bool isProductVisible = await InventoryPage.isProductInInventoryAsync(item.ItemName);
+            bool isProductVisible = await Page<InventoryPage>().isProductInInventoryAsync(item.ItemName);
             Assert.That(isProductVisible, Is.True, $"Product '{item.ItemName}' is not visible in the inventory.");
-            float productPrice = await InventoryPage.GetProductPriceAsync(item.ItemName);
+            float productPrice = await Page<InventoryPage>().GetProductPriceAsync(item.ItemName);
             Assert.That(productPrice, Is.EqualTo(item.ItemPrice), $"Product price for '{item.ItemName}' does not match. Expected: {item.ItemPrice}, Actual: {productPrice}");
         }
     }
@@ -53,14 +53,14 @@ public class InventoryStepDef(ScenarioContext scenarioContext) : BaseSteps(scena
     [Then(@"I clicked on the checkout button")]
     public async Task ThenIclickedonthecheckoutbuttonAsync()
     {
-        await InventoryPage.ClickCheckoutAsync();
+        await Page<InventoryPage>().ClickCheckoutAsync();
     }
 
 
     [Then(@"I should be redirected to the checkout page")]
     public async Task ThenIshouldberedirectedtothecheckoutpageAsync()
     {
-        bool isCheckedOutPage = await CheckoutPage.IsCheckoutTitleVisibleAsync();
+        bool isCheckedOutPage = await Page<CheckoutPage>().IsCheckoutTitleVisibleAsync();
         Assert.That(isCheckedOutPage, Is.True, "Checkout page is not loaded after clicking checkout button.");
     }
 
@@ -71,7 +71,7 @@ public class InventoryStepDef(ScenarioContext scenarioContext) : BaseSteps(scena
         //CrateInstance only fetch first row of the table
         //If you want to fetch all rows, use CreateSet<T>() method
         var details = table.CreateInstance<CheckoutDetails>();
-        CheckoutPage.FillCheckoutFormAsync(details.FirstName, details.LastName, details.PostalCode).GetAwaiter().GetResult();
+        Page<CheckoutPage>().FillCheckoutFormAsync(details.FirstName, details.LastName, details.PostalCode).GetAwaiter().GetResult();
 
     }
 
@@ -79,14 +79,14 @@ public class InventoryStepDef(ScenarioContext scenarioContext) : BaseSteps(scena
     [When(@"I click on the continue button")]
     public async Task WhenIclickonthecontinuebutton()
     {
-        await CheckoutPage.ClickContinueButtonAsync();
+        await Page<CheckoutPage>().ClickContinueButtonAsync();
     }
 
 
     [Then(@"I should be redirected to the overview page")]
     public async Task ThenIshouldberedirectedtotheoverviewpageAsync()
     {
-       await CheckoutOverviewPage.IsCheckoutOverviewTitleVisibleAsync();
+       await Page<CheckoutOverviewPage>().IsCheckoutOverviewTitleVisibleAsync();
     }
 
 
@@ -97,8 +97,8 @@ public class InventoryStepDef(ScenarioContext scenarioContext) : BaseSteps(scena
 
         foreach (var item in items)
         {
-            await CheckoutOverviewPage.IsProductInCheckoutOverviewAsync(item.ItemName);
-            float productPrice = await CheckoutOverviewPage.GetProductPriceAsync(item.ItemName);
+            await Page<CheckoutOverviewPage>().IsProductInCheckoutOverviewAsync(item.ItemName);
+            float productPrice = await Page<CheckoutOverviewPage>().GetProductPriceAsync(item.ItemName);
             Assert.That(productPrice, Is.EqualTo(item.ItemPrice), $"Product price for '{item.ItemName}' does not match. Expected: {item.ItemPrice}, Actual: {productPrice}");
         }
     }
@@ -108,7 +108,7 @@ public class InventoryStepDef(ScenarioContext scenarioContext) : BaseSteps(scena
     public async Task ThenTheItemtotalshouldbeAsync(float expectedItemTotal)
     {
 
-        float actualItemTotal = await CheckoutOverviewPage.GetItemTotalAsync();
+        float actualItemTotal = await Page<CheckoutOverviewPage>().GetItemTotalAsync();
         Assert.That(actualItemTotal, Is.EqualTo(expectedItemTotal), $"Expected Item Total: {expectedItemTotal}, Actual Item Total: {actualItemTotal}");
     }
 
@@ -116,14 +116,14 @@ public class InventoryStepDef(ScenarioContext scenarioContext) : BaseSteps(scena
     [Then(@"The Tax should be {float}")]
     public async Task ThenTheTaxshouldbeAsync(float expectedTax)
     {
-        float actualTax = await CheckoutOverviewPage.GetTaxAsync();
+        float actualTax = await Page<CheckoutOverviewPage>().GetTaxAsync();
         Assert.That(actualTax, Is.EqualTo(expectedTax), $"Expected Tax: {expectedTax}, Actual Tax: {actualTax}");
     }
 
     [Then(@"The Total should be {float}")]
     public async Task ThenTheTotalshouldbeAsync(float expectedGrandTotal)
     {
-        float actualTotal = await CheckoutOverviewPage.GetTotalAsync();
+        float actualTotal = await Page<CheckoutOverviewPage>().GetTotalAsync();
         Assert.That(actualTotal, Is.EqualTo(expectedGrandTotal), $"Expected Total: {expectedGrandTotal}, Actual Total: {actualTotal}");
     }
 
@@ -131,20 +131,20 @@ public class InventoryStepDef(ScenarioContext scenarioContext) : BaseSteps(scena
     [When(@"I click on the finish button")]
     public async Task WhenIclickonthefinishbuttonAsync()
     {
-       await CheckoutOverviewPage.ClickFinishButtonAsync();
+       await Page<CheckoutOverviewPage>().ClickFinishButtonAsync();
     }
 
     [Then(@"I should see the confirmation message ""(.*)""")]
     public async Task ThenIshouldseetheconfirmationmessageAsync(string args1)
     {
-        await CheckoutCompletePage.IsCheckoutCompleteMessageVisibleAsync();
+        await Page<CheckoutCompletePage>().IsCheckoutCompleteMessageVisibleAsync();
 
     }
 
     [When(@"I click on the back home button")]
     public async Task WhenIclickonthebackhomebuttonAsync()
     {
-        await CheckoutCompletePage.ClickBackHomeButtonAsync();
+        await Page<CheckoutCompletePage>().ClickBackHomeButtonAsync();
     }
 
 
