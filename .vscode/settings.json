@@ -1,5 +1,7 @@
 {
   "dotnet.defaultSolution": "PlaywrightReqnrollFramework.sln",
+  "dotnet-test-explorer.testArguments": "--settings PlaywrightReqnrollFramework.runsettings",
+  "dotnet.unitTests.runSettingsPath": "${workspaceFolder}/PlaywrightReqnrollFramework.runsettings",
   "cucumberautocomplete.steps": [
     "PlaywrightReqnrollFramework/**/*.cs"
   ],

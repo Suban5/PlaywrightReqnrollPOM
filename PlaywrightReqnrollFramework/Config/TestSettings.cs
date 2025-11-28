@@ -19,6 +19,10 @@ public class TestSettings
     /// </summary>
     public int SlowMo { get; set; } = 500;
     
+    /// <summary>
+    /// Base URL for the application under test
+    /// </summary>
+    public string BaseUrl { get; set; } = "https://www.saucedemo.com";
 
     /// <summary>
     /// Browser type to use for testing
