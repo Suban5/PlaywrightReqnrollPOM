@@ -6,5 +6,5 @@
   "Headless": true,
   "SlowMo": 0,
   "Timeout": 30,
-  "BrowserType": "Firefox"  
+  "BrowserType": "Firefox"
 }
