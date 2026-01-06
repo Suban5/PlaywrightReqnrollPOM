@@ -16,22 +16,24 @@ public class LoginPage(ScenarioContext scenarioContext) : BasePage(scenarioConte
 
     public async Task NavigateToAsync(string url)
     {
-        await _page.GotoAsync(url);
+        await GotoAsync(url);
     }
+    
     public async Task LoginAsync(string username, string password)
     {
-        await UsernameField.FillAsync(username);
-        await PasswordField.FillAsync(password);
-        await LoginButton.ClickAsync();
+        await FillAsync(UsernameField, username);
+        await FillAsync(PasswordField, password);
+        await ClickAsync(LoginButton);
     }
 
     public async Task<bool> IsErrorMessageVisibleAsync()
     {
-        return await ErrorMessage.IsVisibleAsync();
+        return await IsVisibleAsync(ErrorMessage);
     }
+    
     public async Task<string> GetErrorMessageTextAsync()
     {
-        return await ErrorMessage.InnerTextAsync();
+        return await GetTextAsync(ErrorMessage);
     }
 
 }

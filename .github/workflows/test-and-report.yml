@@ -1,0 +1,30 @@
+name: Build Project
+
+on:
+  push:
+    branches: [ main, master, Report_enhancement ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:  # Allows manual trigger
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      
+    - name: 🔧 Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+        
+    - name: 📦 Restore dependencies
+      run: dotnet restore
+      
+    - name: 🔨 Build
+      run: dotnet build --no-restore --configuration Release
+      
+    - name: ✅ Build Complete
+      run: echo "Build completed successfully!"

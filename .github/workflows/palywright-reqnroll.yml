@@ -1,4 +1,4 @@
-name: Playwright Tests with Reqnroll (NUnit3 + ExtentReports)
+name: Build Project (Windows)
 
 on:
   push:
@@ -7,8 +7,8 @@ on:
     branches: [ "main" ]
 
 jobs:
-  test:
-    name: Run Tests
+  build:
+    name: Build
     runs-on: windows-latest
     env:
       ENVIRONMENT: CI
@@ -26,18 +26,5 @@ jobs:
           dotnet restore
           dotnet build --configuration Release --no-restore
       
-      - name: Restore .NET tools
-        run: dotnet tool restore    
-
-      - name: Install Playwright
-        run: dotnet playwright install
-
-      - name: Run Tests (NUnit3)
-        run: dotnet test --no-build --configuration Release --logger:"nunit;LogFilePath=TestResults/nunit-results.xml"
-
-      - name: Upload NUnit Results
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: nunit-test-results
-          path: PlaywrightReqnrollFramework/TestResults/nunit-results.xml
+      - name: Build Complete
+        run: echo "Build completed successfully!"

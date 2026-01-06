@@ -37,57 +37,57 @@ public class CheckoutOverviewPage(ScenarioContext scenarioContext) : BasePage(sc
     public async Task<bool> IsCheckoutOverviewTitleVisibleAsync()
     {
         var title = GetCheckoutOverviewTitle();
-        return await title.IsVisibleAsync() && (await title.InnerTextAsync()) == "Checkout: Overview";
+        return await IsVisibleAsync(title) && (await GetTextAsync(title)) == "Checkout: Overview";
     }
 
     public async Task<bool> IsProductInCheckoutOverviewAsync(string productName)
     {
         var productLocator = GetProductName(productName);
-        return await productLocator.IsVisibleAsync();
+        return await IsVisibleAsync(productLocator);
     }
 
     public async Task<decimal> GetProductPriceAsync(string productName)
     {
         var priceLocator = GetProductPrice(productName);
-        var priceText = await priceLocator.InnerTextAsync();
+        var priceText = await GetTextAsync(priceLocator);
         return ParsePrice(priceText);
     }
 
     public async Task<decimal> GetItemTotalAsync()
     {
-        var itemTotalText = await ItemTotal.InnerTextAsync();
+        var itemTotalText = await GetTextAsync(ItemTotal);
         return ParsePrice(itemTotalText);
     }
 
     public async Task<decimal> GetTaxAsync()
     {
-        var taxText = await Tax.InnerTextAsync();
+        var taxText = await GetTextAsync(Tax);
         return ParsePrice(taxText);
     }
 
     public async Task<decimal> GetTotalAsync()
     {
-        var totalText = await Total.InnerTextAsync();
+        var totalText = await GetTextAsync(Total);
         return ParsePrice(totalText);
     }
 
     public async Task ClickFinishButtonAsync()
     {
-        await FinishButton.ClickAsync();
+        await ClickAsync(FinishButton);
     }
 
     public async Task ClickCancelButtonAsync()
     {
-        await CancelButton.ClickAsync();
+        await ClickAsync(CancelButton);
     }
 
     public async Task<string> GetPaymentInfoAsync()
     {
-        return await PaymentInfo.InnerTextAsync();
+        return await GetTextAsync(PaymentInfo);
     }
 
     public async Task<string> GetShippingInfoAsync()
     {
-        return await ShippingInfo.InnerTextAsync();
+        return await GetTextAsync(ShippingInfo);
     }
 }

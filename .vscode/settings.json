@@ -1,5 +1,7 @@
 {
   "dotnet.defaultSolution": "PlaywrightReqnrollFramework.sln",
+  "dotnet-test-explorer.testArguments": "--settings PlaywrightReqnrollFramework.runsettings",
+  "dotnet.unitTests.runSettingsPath": "${workspaceFolder}/PlaywrightReqnrollFramework.runsettings",
   "cucumberautocomplete.steps": [
     "PlaywrightReqnrollFramework/**/*.cs"
   ],
@@ -9,5 +11,15 @@
   "cucumberautocomplete.stepsInvariants": true,
   "files.exclude": {
     "**/*.feature.cs": true
-  }
+  },
+  "terminal.integrated.env.osx": {
+    "PATH": "/opt/homebrew/bin:/opt/homebrew/sbin:${env:PATH}"
+  },
+  "terminal.integrated.profiles.osx": {
+    "zsh (login)": {
+      "path": "zsh",
+      "args": ["-l"]
+    }
+  },
+  "terminal.integrated.defaultProfile.osx": "zsh (login)"
 }
