@@ -43,27 +43,28 @@ public class ProductPage(ScenarioContext scenarioContext) : BasePage(scenarioCon
     // Method to navigate to the cart
     public async Task NavigateToCartAsync()
     {
-        await CartButton.ClickAsync();
+        await ClickAsync(CartButton);
     }
 
     public async Task<bool> IsHeaderVisibleAsync()
     {
-        return await ProductsHeader.IsVisibleAsync() &&
-               (await ProductsHeader.InnerTextAsync()) == "Products";
+        return await IsVisibleAsync(ProductsHeader) &&
+               (await GetTextAsync(ProductsHeader)) == "Products";
     }
 
     public async Task AddProductToCartAsync(string productName)
     {
         var addToCartButton = GetAddToCartButton(productName);
-        await addToCartButton.ClickAsync();
+        await ClickAsync(addToCartButton);
     }
 
     public async Task<decimal> GetProductPriceAsync(string productName)
     {
         var priceLocator = GetProductPrice(productName);
-        var priceText = await priceLocator.InnerTextAsync();
+        var priceText = await GetTextAsync(priceLocator);
         return ParsePrice(priceText);
     }
+    
     public async Task<bool> IsProductInCartAsync(string productName)
     {
         // Navigate to the cart
@@ -73,12 +74,13 @@ public class ProductPage(ScenarioContext scenarioContext) : BasePage(scenarioCon
         var productInCart = _page.Locator(".cart_item").Filter(new() { HasText = productName });
         return await productInCart.CountAsync() > 0;
     }
+    
     public async Task<int> GetCartItemCountAsync()
     {
         var cartItemCountLocator = _page.Locator(".shopping_cart_badge");
-        if (await cartItemCountLocator.IsVisibleAsync())
+        if (await IsVisibleAsync(cartItemCountLocator))
         {
-            string countText = await cartItemCountLocator.InnerTextAsync();
+            string countText = await GetTextAsync(cartItemCountLocator);
             return int.Parse(countText);
         }
         return 0; // Return 0 if the cart is empty or the badge is not visible

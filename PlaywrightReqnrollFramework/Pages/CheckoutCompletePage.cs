@@ -13,16 +13,18 @@ public class CheckoutCompletePage(ScenarioContext scenarioContext) : BasePage(sc
 
     public async Task<bool> IsCheckoutCompleteTitleVisibleAsync()
     {
-        return await CheckoutCompleteTitle.IsVisibleAsync() &&
-               (await CheckoutCompleteTitle.InnerTextAsync()) == "Checkout: Complete!";
+        return await IsVisibleAsync(CheckoutCompleteTitle) &&
+               (await GetTextAsync(CheckoutCompleteTitle)) == "Checkout: Complete!";
     }
+    
     public async Task<bool> IsCheckoutCompleteMessageVisibleAsync()
     {
-        return await CheckoutCompleteMessage.IsVisibleAsync() &&
-               (await CheckoutCompleteMessage.InnerTextAsync()) == "Thank you for your order!";
+        return await IsVisibleAsync(CheckoutCompleteMessage) &&
+               (await GetTextAsync(CheckoutCompleteMessage)) == "Thank you for your order!";
     }
+    
     public async Task ClickBackHomeButtonAsync()
     {
-        await BackHomeButton.ClickAsync();
+        await ClickAsync(BackHomeButton);
     }
 }

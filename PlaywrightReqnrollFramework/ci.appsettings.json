@@ -2,9 +2,24 @@
   "sdk": {
     "version": "SDK_VERSION"
   },
-  "BaseUrl" : "https://www.saucedemo.com",
+  "BaseUrl": "https://www.saucedemo.com",
   "Headless": true,
   "SlowMo": 0,
   "Timeout": 30,
-  "BrowserType": "Firefox"  
+  "ActionTimeout": 15,
+  "NavigationTimeout": 30,
+  "BrowserType": "Firefox",
+  "ContextSettings": {
+    "ViewportWidth": 1920,
+    "ViewportHeight": 1080,
+    "Locale": "en-US",
+    "TimezoneId": "UTC",
+    "AcceptDownloads": true,
+    "IgnoreHTTPSErrors": false,
+    "DeviceScaleFactor": 1.0,
+    "IsMobile": false,
+    "RecordVideo": true,
+    "VideoDir": "videos",
+    "RecordTrace": "on"
+  }
 }

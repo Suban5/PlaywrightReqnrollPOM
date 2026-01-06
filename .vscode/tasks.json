@@ -1,0 +1,80 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run Tests with Allure Report",
+      "type": "shell",
+      "command": "/usr/local/share/dotnet/dotnet",
+      "args": ["test"],
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": true,
+        "clear": true
+      },
+      "problemMatcher": "$msCompile",
+      "dependsOrder": "sequence"
+    },
+    {
+      "label": "Generate Allure Report",
+      "type": "shell",
+      "command": "allure",
+      "args": [
+        "serve",
+        "PlaywrightReqnrollFramework/bin/Debug/net8.0/allure-results/"
+      ],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Test + Report (Full Flow)",
+      "dependsOn": [
+        "Run Tests with Allure Report",
+        "Generate Allure Report"
+      ],
+      "dependsOrder": "sequence",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always"
+      }
+    },
+    {
+      "label": "Clean Allure Results",
+      "type": "shell",
+      "command": "rm",
+      "args": [
+        "-rf",
+        "PlaywrightReqnrollFramework/bin/Debug/net8.0/allure-results/*"
+      ],
+      "presentation": {
+        "reveal": "silent"
+      }
+    },
+    {
+      "label": "open-allure-report",
+      "type": "shell",
+      "command": "/opt/homebrew/bin/allure",
+      "args": [
+        "serve",
+        "PlaywrightReqnrollFramework/bin/Debug/net8.0/allure-results/"
+      ],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "focus": false
+      },
+      "problemMatcher": [],
+      "isBackground": true
+    }
+  ]
+}
