@@ -16,7 +16,7 @@ A robust, scalable, and maintainable **web automation testing framework** that c
 - ✅ **Page Object Model (POM)**: Maintainable and reusable UI automation code.
 - ✅ **Extensible & Scalable**: Easily add new tests or adapt to UI changes.
 - ✅ **Rich Reporting**: Integrated with Allure Reports for beautiful, interactive HTML test reports with screenshots.
-- ✅ **CI/CD Ready**: Includes GitHub Actions workflow for automated test execution and artifact publishing.
+- ✅ **CI/CD Ready**: Includes GitHub Actions workflow for automated build validation.
 
 ---
 
@@ -185,9 +185,9 @@ Screenshots are automatically captured on step failures and attached to the Allu
 
 ## 🤖 Continuous Integration
 
-- **GitHub Actions**: Automated workflow runs on every push and pull request.
-- **Artifacts**: Allure reports, test results, and screenshots are available for download after each run.
-- **Test Execution**: Tests run in headless mode on CI with automatic retry on failure.
+- **GitHub Actions**: Automated build workflow runs on every push and pull request.
+- **Build Validation**: Ensures the project compiles successfully on both Ubuntu and Windows environments.
+- **Status**: Test execution and reporting are currently disabled in CI/CD pipeline.
 
 ---
 

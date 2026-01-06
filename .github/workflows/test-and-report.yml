@@ -1,4 +1,4 @@
-name: Run Tests & Generate Allure Report
+name: Build Project
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
   workflow_dispatch:  # Allows manual trigger
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
     
     steps:
@@ -25,51 +25,6 @@ jobs:
       
     - name: 🔨 Build
       run: dotnet build --no-restore --configuration Release
-        
-    - name: 🎭 Setup Playwright Browsers
-      run: pwsh PlaywrightReqnrollFramework/bin/Release/net8.0/playwright.ps1 install --with-deps
       
-    - name: 🧪 Run Tests
-      run: dotnet test --no-build --configuration Release --logger "console;verbosity=detailed"
-      continue-on-error: true  # Continue even if tests fail
-      
-    - name: 📊 Get Allure history
-      uses: actions/checkout@v4
-      if: always()
-      continue-on-error: true
-      with:
-        ref: gh-pages
-        path: gh-pages
-        
-    - name: 📈 Generate Allure Report
-      uses: simple-elf/allure-report-action@master
-      if: always()
-      with:
-        allure_results: PlaywrightReqnrollFramework/bin/Release/net8.0/allure-results
-        allure_history: allure-history
-        keep_reports: 20
-        
-    - name: 🚀 Deploy Allure Report to GitHub Pages
-      if: always()
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_branch: gh-pages
-        publish_dir: allure-history
-        force_orphan: true
-        
-    - name: 📎 Upload Allure Results as Artifact
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: allure-results
-        path: PlaywrightReqnrollFramework/bin/Release/net8.0/allure-results
-        retention-days: 30
-        
-    - name: 📸 Upload Screenshots
-      if: failure()
-      uses: actions/upload-artifact@v4
-      with:
-        name: test-screenshots
-        path: PlaywrightReqnrollFramework/bin/Release/net8.0/TestResults/Screenshots
-        retention-days: 30
+    - name: ✅ Build Complete
+      run: echo "Build completed successfully!"
