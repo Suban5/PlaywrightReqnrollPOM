@@ -17,22 +17,24 @@ public class CheckoutPage(ScenarioContext scenarioContext) : BasePage(scenarioCo
 
     public async Task<bool> IsCheckoutTitleVisibleAsync()
     {
-        return await CheckoutTitle.IsVisibleAsync() &&
-               (await CheckoutTitle.InnerTextAsync()) == "Checkout: Your Information";
+        return await IsVisibleAsync(CheckoutTitle) &&
+               (await GetTextAsync(CheckoutTitle)) == "Checkout: Your Information";
     }
 
     public async Task FillCheckoutFormAsync(string firstName, string lastName, string postalCode)
     {
-        await FirstNameField.FillAsync(firstName);
-        await LastNameField.FillAsync(lastName);
-        await PostalCodeField.FillAsync(postalCode);
+        await FillAsync(FirstNameField, firstName);
+        await FillAsync(LastNameField, lastName);
+        await FillAsync(PostalCodeField, postalCode);
     }
+    
     public async Task ClickContinueButtonAsync()
     {
-        await ContinueButton.ClickAsync();
+        await ClickAsync(ContinueButton);
     }
+    
     public async Task ClickCancelButtonAsync()
     {
-        await CancelButton.ClickAsync();
+        await ClickAsync(CancelButton);
     }
 }

@@ -33,25 +33,29 @@ public class InventoryPage(ScenarioContext scenarioContext) : BasePage(scenarioC
     public async Task<bool> isProductInInventoryAsync(string productName)
     {
         var productLocator = GetProductName(productName);
-        return await productLocator.IsVisibleAsync();
+        return await IsVisibleAsync(productLocator);
     }
+    
     public async Task ClickContinueShoppingAsync()
     {
-        await BtnContinueShopping.ClickAsync();
+        await ClickAsync(BtnContinueShopping);
     }
+    
     public async Task ClickCheckoutAsync()
     {
-        await BtnCheckout.ClickAsync();
+        await ClickAsync(BtnCheckout);
     }
+    
     public async Task RemoveProductFromCartAsync(string productName)
     {
         var removeButton = GetInventoryRemoveBtn(productName);
-        await removeButton.ClickAsync();
+        await ClickAsync(removeButton);
     }
+    
     public async Task<decimal> GetProductPriceAsync(string productName)
     {
         var priceLocator = GetInventoryItemPrice(productName);
-        var priceText = await priceLocator.InnerTextAsync();
+        var priceText = await GetTextAsync(priceLocator);
         return ParsePrice(priceText);
     }
 }
