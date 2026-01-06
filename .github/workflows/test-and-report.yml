@@ -20,16 +20,14 @@ jobs:
       with:
         dotnet-version: '8.0.x'
         
-    - name: 🎭 Setup Playwright Browsers
-      run: |
-        dotnet build
-        pwsh PlaywrightReqnrollFramework/bin/Debug/net8.0/playwright.ps1 install --with-deps chromium
-        
     - name: 📦 Restore dependencies
       run: dotnet restore
       
     - name: 🔨 Build
       run: dotnet build --no-restore --configuration Release
+        
+    - name: 🎭 Setup Playwright Browsers
+      run: pwsh PlaywrightReqnrollFramework/bin/Release/net8.0/playwright.ps1 install --with-deps
       
     - name: 🧪 Run Tests
       run: dotnet test --no-build --configuration Release --logger "console;verbosity=detailed"
